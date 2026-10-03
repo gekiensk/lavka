@@ -1,11 +1,13 @@
 // Шапка сайта. Серверный компонент: берёт контакты и категории из базы.
 import Link from "next/link";
-import { Clock, MapPin, Phone, Send, ShoppingCart } from "lucide-react";
+import { Clock, MapPin, Phone, Send } from "lucide-react";
 import { getCategoryTree, getSettings, categoryUrl } from "@/lib/catalog";
 import { phoneHref, telegramHref } from "@/lib/contacts";
 import { Logo } from "./Logo";
 import { SearchBox } from "./SearchBox";
 import { MobileMenu } from "./MobileMenu";
+import { CartLink } from "@/components/cart/CartLink";
+import { RequestDialog } from "@/components/ui/RequestDialog";
 
 export async function Header() {
   const [settings, tree] = await Promise.all([getSettings(), getCategoryTree()]);
@@ -27,7 +29,8 @@ export async function Header() {
           <span className="flex items-center gap-1.5">
             <Clock className="h-4 w-4" /> {settings.hours}
           </span>
-          <nav className="ml-auto flex gap-5">
+          <nav className="ml-auto flex items-center gap-5">
+            <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="font-semibold text-brand-700 hover:text-ink" />
             <Link href="/delivery" className="hover:text-ink">Доставка и оплата</Link>
             <Link href="/about" className="hover:text-ink">О магазине</Link>
             <Link href="/contacts" className="hover:text-ink">Контакты</Link>
@@ -70,9 +73,7 @@ export async function Header() {
               <Send className="h-5 w-5" />
             </a>
           )}
-          <Link href="/cart" className="rounded-lg p-2.5 text-brand-700 hover:bg-brand-50" aria-label="Корзина">
-            <ShoppingCart className="h-5 w-5" />
-          </Link>
+          <CartLink />
         </div>
       </div>
 

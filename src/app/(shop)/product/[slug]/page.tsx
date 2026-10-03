@@ -13,6 +13,7 @@ import { Gallery } from "@/components/product/Gallery";
 import { SpecsTable } from "@/components/product/SpecsTable";
 import { StockBadge } from "@/components/catalog/StockBadge";
 import { ProductGrid } from "@/components/catalog/ProductGrid";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 type Props = PageProps<"/product/[slug]">;
 
@@ -96,31 +97,36 @@ export default async function ProductPage({ params }: Props) {
             </div>
 
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              {product.stock === "ON_ORDER" ? (
+              <AddToCartButton
+                className="flex-1"
+                product={{
+                  id: product.id,
+                  slug: product.slug,
+                  sku: product.sku,
+                  name: product.name,
+                  price: product.price,
+                  unit: product.unit,
+                  image: product.images[0]?.url,
+                  stock: product.stock,
+                }}
+              />
+              {product.stock === "ON_ORDER" && (
                 <RequestDialog
                   type="AVAILABILITY"
                   productId={product.id}
                   productName={product.name}
                   buttonText="Узнать наличие и срок"
-                  buttonClassName="btn flex-1 bg-brand-600 text-white hover:bg-brand-700"
+                  buttonClassName="btn flex-1 border border-brand-300 bg-white text-brand-700 hover:bg-brand-50"
                 />
-              ) : (
-                <RequestDialog
-                  type="CALLBACK"
-                  productId={product.id}
-                  productName={product.name}
-                  buttonText="Заказать звонок"
-                  buttonClassName="btn flex-1 bg-brand-600 text-white hover:bg-brand-700"
-                />
-              )}
-              {settings.telegram && (
-                <a href={telegramHref(settings.telegram)} target="_blank" rel="noopener" className="btn flex-1 border border-line bg-white text-brand-700 hover:border-brand-300">
-                  <MessageCircle className="h-4 w-4" /> Спросить в Telegram
-                </a>
               )}
             </div>
+            {settings.telegram && (
+              <a href={telegramHref(settings.telegram)} target="_blank" rel="noopener" className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline">
+                <MessageCircle className="h-4 w-4" /> Задать вопрос в Telegram
+              </a>
+            )}
             {product.stock === "ON_ORDER" && (
-              <p className="mt-3 text-sm text-muted">Товара нет на складе. Оставьте заявку — уточним срок поставки и перезвоним.</p>
+              <p className="mt-3 text-sm text-muted">Товара сейчас нет в магазине. Можно оформить заказ или оставить заявку — уточним срок поставки и перезвоним.</p>
             )}
           </div>
 

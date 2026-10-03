@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { ProductCardData } from "@/lib/catalog";
 import { discountPercent, formatPrice } from "@/lib/format";
 import { StockBadge } from "./StockBadge";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 export function ProductCard({ product }: { product: ProductCardData }) {
   const image = product.images[0];
@@ -38,12 +39,28 @@ export function ProductCard({ product }: { product: ProductCardData }) {
       </h3>
       <p className="mt-1 text-xs text-muted">Арт. {product.sku}</p>
 
-      <div className="mt-auto flex flex-wrap items-baseline gap-x-2 pt-3">
-        <span className={`text-lg font-extrabold ${discount ? "text-sale" : "text-ink"}`}>
-          {formatPrice(product.price)}
-          {product.unit !== "шт" && <span className="text-sm font-semibold text-muted"> / {product.unit}</span>}
-        </span>
-        {discount && <span className="text-sm text-muted line-through">{formatPrice(product.oldPrice!)}</span>}
+      <div className="mt-auto flex items-end justify-between gap-2 pt-3">
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <span className={`text-lg font-extrabold ${discount ? "text-sale" : "text-ink"}`}>
+            {formatPrice(product.price)}
+            {product.unit !== "шт" && <span className="text-sm font-semibold text-muted"> / {product.unit}</span>}
+          </span>
+          {discount && <span className="text-sm text-muted line-through">{formatPrice(product.oldPrice!)}</span>}
+        </div>
+        <AddToCartButton
+          variant="compact"
+          className="shrink-0"
+          product={{
+            id: product.id,
+            slug: product.slug,
+            sku: product.sku,
+            name: product.name,
+            price: product.price,
+            unit: product.unit,
+            image: image?.url,
+            stock: product.stock,
+          }}
+        />
       </div>
     </article>
   );
