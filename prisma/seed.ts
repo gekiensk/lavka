@@ -4,6 +4,7 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, type Stock } from "../src/generated/prisma/client";
 import { slugify } from "../src/lib/slug";
+import { BANNERS, PAGES, POSTS } from "./seed-content";
 
 const db = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
@@ -419,6 +420,22 @@ async function main() {
   for (const [key, value] of Object.entries(SETTINGS)) {
     // update: {} — не перезаписываем то, что уже поменяли в админке
     await db.setting.upsert({ where: { key }, create: { key, value }, update: {} });
+  }
+
+  console.log("Создаём страницы, статьи и баннеры…");
+  // Только создаём недостающие: тексты, отредактированные в админке, не перезаписываются
+  for (const p of PAGES) {
+    await db.page.upsert({ where: { slug: p.slug }, create: p, update: {} });
+  }
+  for (const [i, p] of POSTS.entries()) {
+    await db.post.upsert({
+      where: { slug: p.slug },
+      create: { ...p, isPublished: true, publishedAt: new Date(Date.now() - i * 7 * 86_400_000) },
+      update: {},
+    });
+  }
+  if ((await db.banner.count()) === 0) {
+    await db.banner.createMany({ data: BANNERS.map((b, i) => ({ ...b, sortOrder: i })) });
   }
 
   console.log(`Готово. Разделов: ${CATEGORIES.length}, товаров: ${PRODUCTS.length}.`);
