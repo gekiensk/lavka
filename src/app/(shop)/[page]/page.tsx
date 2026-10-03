@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Markdown } from "@/components/ui/Markdown";
 
@@ -11,11 +12,7 @@ type Props = PageProps<"/[page]">;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = await getPage((await params).page);
   if (!page) return {};
-  return {
-    title: page.metaTitle ?? page.title,
-    description: page.metaDesc ?? undefined,
-    alternates: { canonical: `/${page.slug}` },
-  };
+  return pageMeta({ title: page.metaTitle ?? page.title, description: page.metaDesc, path: `/${page.slug}` });
 }
 
 export default async function TextPage({ params }: Props) {

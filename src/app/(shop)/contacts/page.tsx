@@ -1,16 +1,17 @@
 // Контакты: адрес, часы работы, кнопки связи, карта.
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
 import { getSettings } from "@/lib/catalog";
 import { phoneHref, telegramHref } from "@/lib/contacts";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { RequestDialog } from "@/components/ui/RequestDialog";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Контакты",
   description: "Адрес, телефон и часы работы магазина сантехники «СанТех Лавка» в Тюмени. Как проехать.",
-  alternates: { canonical: "/contacts" },
-};
+  path: "/contacts",
+});
 
 export default async function ContactsPage() {
   const s = await getSettings();

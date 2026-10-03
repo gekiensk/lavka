@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { MessageCircle, ShieldCheck, Store, Truck } from "lucide-react";
 import { categoryUrl, getSettings } from "@/lib/catalog";
 import { getBoughtTogether, getProductBySlug, getSimilarProducts } from "@/lib/product";
+import { pageMeta } from "@/lib/seo";
 import { discountPercent, formatPrice } from "@/lib/format";
 import { telegramHref } from "@/lib/contacts";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -14,6 +15,7 @@ import { SpecsTable } from "@/components/product/SpecsTable";
 import { StockBadge } from "@/components/catalog/StockBadge";
 import { ProductGrid } from "@/components/catalog/ProductGrid";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { JsonLd, productJsonLd } from "@/components/seo/JsonLd";
 
 type Props = PageProps<"/product/[slug]">;
 
@@ -26,17 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     product.metaDesc ??
     `${product.name} за ${formatPrice(product.price)}. ${product.stock === "IN_STOCK" ? "В наличии" : "Под заказ"} в Тюмени. Арт. ${product.sku}. Доставка и самовывоз.`;
 
-  return {
+  return pageMeta({
     title: product.metaTitle ?? product.name,
     description,
-    alternates: { canonical: `/product/${product.slug}` },
-    openGraph: {
-      type: "website",
-      title: product.name,
-      description,
-      images: product.images.filter((i) => !i.url.endsWith(".svg")).map((i) => i.url),
-    },
-  };
+    path: `/product/${product.slug}`,
+    images: product.images.map((i) => i.url),
+  });
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -64,6 +61,18 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="container-page">
+      <JsonLd
+        data={productJsonLd({
+          name: product.name,
+          sku: product.sku,
+          slug: product.slug,
+          description: product.description,
+          price: product.price,
+          stock: product.stock,
+          brand: product.brand?.name ?? null,
+          images: product.images.map((i) => i.url),
+        })}
+      />
       <Breadcrumbs
         items={[
           { name: "Каталог", url: "/catalog" },
