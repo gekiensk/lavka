@@ -281,6 +281,16 @@ const PRODUCTS: SeedProduct[] = [
   },
 ];
 
+// «С этим товаром покупают»: артикул товара → артикулы сопутствующих
+const RELATIONS: Record<string, string[]> = {
+  LM3071C: ["VLT-BV-1/2", "VLT-MP16"],
+  "GR-33281003": ["VLT-BV-1/2", "VLT-MP16"],
+  "CRS-PARVA": ["VLT-BV-1/2", "STK-BLANCA60"],
+  "THX-ERS80": ["VLT-BV-1/2", "VLT-PPR20", "VLT-PP-ELB20"],
+  "RFR-BASE500-8": ["VLT-PPR25-AL", "VLT-PP-TEE20", "VLT-BV-1/2"],
+  "TRT-STANDART170": ["IDS-VLS-BTH", "HG-71400"],
+};
+
 // Настройки магазина по умолчанию. Позже их можно будет менять в админке.
 const SETTINGS: Record<string, string> = {
   city: "Тюмень",
@@ -375,7 +385,13 @@ async function main() {
         // Разная «популярность» и дата создания, чтобы сортировки отличались
         popularity: (i * 37) % 100,
         createdAt: new Date(Date.now() - i * 86_400_000),
-        images: { create: [{ url: `/images/products/${p.image}.svg`, alt: p.name }] },
+        images: {
+          create: [
+            { url: `/images/products/${p.image}.svg`, alt: p.name, sortOrder: 0 },
+            // У хитов — второе фото (упаковка), чтобы было видно галерею
+            ...(p.hit ? [{ url: "/images/products/package.svg", alt: `${p.name} — упаковка`, sortOrder: 1 }] : []),
+          ],
+        },
         attributes: {
           create: Object.entries(p.attrs).map(([name, value]) => {
             const attr = attrIds.get(name);
@@ -388,6 +404,14 @@ async function main() {
           }),
         },
       },
+    });
+  }
+
+  console.log("Связываем товары «С этим товаром покупают»…");
+  const bySku = new Map((await db.product.findMany({ select: { id: true, sku: true } })).map((p) => [p.sku, p.id]));
+  for (const [from, list] of Object.entries(RELATIONS)) {
+    await db.productRelation.createMany({
+      data: list.map((to) => ({ fromId: bySku.get(from)!, toId: bySku.get(to)! })),
     });
   }
 
