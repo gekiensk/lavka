@@ -1,4 +1,5 @@
 // Карточка товара в списке: фото, название, цена, наличие.
+import { skipOptimization } from "@/lib/images";
 import Link from "next/link";
 import Image from "next/image";
 import type { ProductCardData } from "@/lib/catalog";
@@ -22,7 +23,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-contain p-2 transition group-hover:scale-[1.03]"
             // SVG-заглушки не нужно пережимать; настоящие фото Next.js оптимизирует сам
-            unoptimized={image.url.endsWith(".svg")}
+            unoptimized={skipOptimization(image.url)}
           />
         )}
         <div className="absolute left-2 top-2 flex flex-col gap-1">

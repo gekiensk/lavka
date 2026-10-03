@@ -1,5 +1,6 @@
 "use client";
 // Содержимое страницы корзины: список товаров, количество, итог.
+import { skipOptimization } from "@/lib/images";
 import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,7 +43,7 @@ export function CartView() {
         {items.map((i) => (
           <li key={i.id} className="flex gap-3 p-3 sm:gap-4 sm:p-4">
             <Link href={`/product/${i.slug}`} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface sm:h-24 sm:w-24">
-              {i.image && <Image src={i.image} alt="" fill sizes="96px" className="object-contain p-1" unoptimized={i.image.endsWith(".svg")} />}
+              {i.image && <Image src={i.image} alt="" fill sizes="96px" className="object-contain p-1" unoptimized={skipOptimization(i.image)} />}
             </Link>
             <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center">
               <div className="min-w-0 flex-1">

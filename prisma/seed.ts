@@ -3,6 +3,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, type Stock } from "../src/generated/prisma/client";
+import bcrypt from "bcryptjs";
 import { slugify } from "../src/lib/slug";
 import { BANNERS, PAGES, POSTS } from "./seed-content";
 
@@ -436,6 +437,12 @@ async function main() {
   }
   if ((await db.banner.count()) === 0) {
     await db.banner.createMany({ data: BANNERS.map((b, i) => ({ ...b, sortOrder: i })) });
+  }
+
+  // Администратор для локальной разработки. На сервере создайте своего: npm run admin:create
+  if ((await db.adminUser.count()) === 0) {
+    await db.adminUser.create({ data: { login: "admin", passwordHash: await bcrypt.hash("admin12345", 12) } });
+    console.log("Создан администратор admin / admin12345 — смените пароль перед запуском сайта!");
   }
 
   console.log(`Готово. Разделов: ${CATEGORIES.length}, товаров: ${PRODUCTS.length}.`);

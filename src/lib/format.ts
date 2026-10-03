@@ -32,3 +32,21 @@ export const STOCK_LABEL = {
   IN_STOCK: "В наличии",
   ON_ORDER: "Под заказ",
 } as const;
+
+export const ORDER_STATUS_LABEL = {
+  NEW: "Новый",
+  IN_PROGRESS: "В работе",
+  DONE: "Выполнен",
+  CANCELLED: "Отменён",
+} as const;
+
+export const DELIVERY_LABEL = {
+  PICKUP: "Самовывоз",
+  DELIVERY: "Доставка",
+} as const;
+
+const dateTime = new Intl.DateTimeFormat("ru-RU", {
+  day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Yekaterinburg",
+});
+/** Дата и время по Тюмени: «03.10.2026, 17:45» */
+export const formatDateTime = (d: Date) => dateTime.format(d);

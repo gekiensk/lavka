@@ -1,4 +1,5 @@
 // Главная страница: баннеры, популярные разделы, акции, хиты, преимущества, статьи.
+import { skipOptimization } from "@/lib/images";
 import Link from "next/link";
 import Image from "next/image";
 import { BadgePercent, PackageCheck, ShieldCheck, Truck, Wrench, Wallet } from "lucide-react";
@@ -45,7 +46,7 @@ export default async function HomePage() {
             <Link key={c.id} href={categoryUrl([c.slug])} className="group rounded-2xl border border-line bg-white p-4 transition hover:border-brand-200 hover:shadow-md">
               {c.image && (
                 <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-xl bg-surface">
-                  <Image src={c.image} alt="" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-contain p-3" unoptimized={c.image.endsWith(".svg")} />
+                  <Image src={c.image} alt="" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-contain p-3" unoptimized={skipOptimization(c.image)} />
                 </div>
               )}
               <span className="font-bold group-hover:text-brand-700">{c.name}</span>

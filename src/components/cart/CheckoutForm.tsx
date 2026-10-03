@@ -1,5 +1,6 @@
 "use client";
 // Форма оформления заказа.
+import { skipOptimization } from "@/lib/images";
 import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -77,7 +78,7 @@ export function CheckoutForm({ pickupAddress }: { pickupAddress: string }) {
           {items.map((i) => (
             <li key={i.id} className="flex items-center gap-3 text-sm">
               <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-white">
-                {i.image && <Image src={i.image} alt="" fill sizes="48px" className="object-contain p-0.5" unoptimized={i.image.endsWith(".svg")} />}
+                {i.image && <Image src={i.image} alt="" fill sizes="48px" className="object-contain p-0.5" unoptimized={skipOptimization(i.image)} />}
               </div>
               <span className="line-clamp-2 flex-1">{i.name}</span>
               <span className="shrink-0 text-right">

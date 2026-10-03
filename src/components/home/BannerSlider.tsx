@@ -1,5 +1,6 @@
 "use client";
 // Баннеры на главной: листаются свайпом и сменяются сами каждые 6 секунд.
+import { skipOptimization } from "@/lib/images";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -37,7 +38,7 @@ export function BannerSlider({ banners }: { banners: Banner[] }) {
             </div>
             {b.image && (
               <div className="relative hidden h-48 w-48 shrink-0 overflow-hidden rounded-2xl bg-white/90 sm:block lg:h-56 lg:w-56">
-                <Image src={b.image} alt="" fill sizes="224px" priority={i === 0} className="object-contain p-4" unoptimized={b.image.endsWith(".svg")} />
+                <Image src={b.image} alt="" fill sizes="224px" priority={i === 0} className="object-contain p-4" unoptimized={skipOptimization(b.image)} />
               </div>
             )}
           </div>

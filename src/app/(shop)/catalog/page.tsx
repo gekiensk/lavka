@@ -1,4 +1,5 @@
 // Весь каталог: разделы и их подразделы.
+import { skipOptimization } from "@/lib/images";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,7 +25,7 @@ export default async function CatalogPage() {
           <section key={c.id} className="flex gap-4 rounded-2xl border border-line bg-white p-4 sm:p-5">
             {c.image && (
               <Link href={categoryUrl([c.slug])} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface sm:h-24 sm:w-24">
-                <Image src={c.image} alt="" fill sizes="96px" className="object-contain p-1" unoptimized={c.image.endsWith(".svg")} />
+                <Image src={c.image} alt="" fill sizes="96px" className="object-contain p-1" unoptimized={skipOptimization(c.image)} />
               </Link>
             )}
             <div className="min-w-0">
