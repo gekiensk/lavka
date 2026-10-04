@@ -19,7 +19,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     title: category.metaTitle ?? `${category.name} — купить в Тюмени`,
     description:
       category.metaDesc ??
-      `${category.name}: цены, наличие и характеристики. Доставка по Тюмени и самовывоз из магазина «СанТех Лавка».`,
+      `${category.name}: цены, наличие и характеристики. Доставка по Тюмени и самовывоз из магазина «Дело Труба».`,
     path: url,
     images: category.image ? [category.image] : [],
     // Страницы с выбранными фильтрами не индексируем — чтобы не плодить дубли в поиске

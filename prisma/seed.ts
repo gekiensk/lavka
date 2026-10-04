@@ -300,13 +300,16 @@ const SETTINGS: Record<string, string> = {
   address: "г. Тюмень, ул. Примерная, 1",
   hours: "Пн–Сб 9:00–19:00, Вс 10:00–17:00",
   phone: "+7 (3452) 00-00-00",
-  telegram: "santeh_lavka",
-  email: "info@santeh-lavka.ru",
+  telegram: "delo_truba",
+  email: "info@delo-truba.ru",
 };
 
 // SEED_CONTENT_ONLY=1 — только страницы, статьи, баннеры и настройки, без тестового каталога и без admin/admin12345.
 // Так безопасно запускать на сервере: заказы и ваши товары не трогаются.
 const CONTENT_ONLY = process.env.SEED_CONTENT_ONLY === "1";
+// SEED_RESET_PAGES=1 — перезаписать тексты страниц («О магазине», «Доставка» и т.д.) заготовками из seed-content.ts.
+// Внимание: правки этих страниц, сделанные в админке, пропадут.
+const RESET_PAGES = process.env.SEED_RESET_PAGES === "1";
 
 async function main() {
   if (!CONTENT_ONLY) await seedCatalog();
@@ -439,9 +442,9 @@ async function seedContent() {
   }
 
   console.log("Создаём страницы, статьи и баннеры…");
-  // Только создаём недостающие: тексты, отредактированные в админке, не перезаписываются
+  // Только создаём недостающие: тексты, отредактированные в админке, не перезаписываются (кроме SEED_RESET_PAGES=1)
   for (const p of PAGES) {
-    await db.page.upsert({ where: { slug: p.slug }, create: p, update: {} });
+    await db.page.upsert({ where: { slug: p.slug }, create: p, update: RESET_PAGES ? p : {} });
   }
   for (const [i, p] of POSTS.entries()) {
     await db.post.upsert({

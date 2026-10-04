@@ -5,7 +5,7 @@ export function phoneHref(phone: string): string {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
 
-/** «santeh_lavka» или «@santeh_lavka» → ссылка на Telegram */
+/** «delo_truba» или «@delo_truba» → ссылка на Telegram */
 export function telegramHref(username: string): string {
   return `https://t.me/${username.replace(/^@/, "")}`;
 }

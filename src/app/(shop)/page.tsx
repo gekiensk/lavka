@@ -35,7 +35,7 @@ export default async function HomePage() {
   return (
     <div className="container-page space-y-12 pt-4 sm:space-y-16 sm:pt-6">
       {/* Главный заголовок страницы для поисковиков */}
-      <h1 className="sr-only">СанТех Лавка — магазин сантехники в {city}</h1>
+      <h1 className="sr-only">Дело Труба — сантехническая лавка в {city}</h1>
 
       {banners.length > 0 && <BannerSlider banners={banners} />}
 
@@ -76,9 +76,10 @@ export default async function HomePage() {
       <section className="rounded-3xl bg-surface p-6 sm:p-10">
         <h2 className="mb-6 text-xl font-extrabold sm:text-2xl">Почему покупают у нас</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {ADVANTAGES.map((a) => (
+          {ADVANTAGES.map((a, i) => (
             <div key={a.title} className="flex gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600">
+              {/* Круглые значки: графитовые, каждый второй — терракотовый, как в брендбуке */}
+              <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white ${i % 2 ? "bg-brand-500" : "bg-ink"}`}>
                 <a.icon className="h-5 w-5" />
               </span>
               <div>
@@ -104,7 +105,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="flex flex-col items-start gap-4 rounded-3xl border border-line p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <section className="flex flex-col items-start gap-4 rounded-3xl border-l-4 border-brand-500 bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <div>
           <h2 className="text-xl font-extrabold">Не нашли нужное или сомневаетесь в выборе?</h2>
           <p className="mt-1 text-muted">Оставьте номер — перезвоним и поможем подобрать. Под заказ привезём то, чего нет в каталоге.</p>

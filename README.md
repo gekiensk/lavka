@@ -1,4 +1,4 @@
-# СанТех Лавка
+# Дело Труба — сантехническая лавка
 
 Сайт-магазин сантехники в Тюмени: каталог с ценами и наличием, заказ без онлайн-оплаты, заявки «Перезвоните мне» и «Узнать наличие», информационные страницы, блог и админка с загрузкой товаров из Excel.
 
@@ -137,7 +137,7 @@ NOTIFY_EMAIL="куда-слать@ваш-домен.ru"
 
 Подойдёт любой VPS в России (Timeweb Cloud, Selectel, REG.RU, Beget и т. п.) с **Ubuntu 22.04 / 24.04**, от 1 ядра и **2 ГБ памяти** (сборке нужно ~1,5 ГБ). Ориентир по цене — 300–600 ₽/мес. Сервер в России упрощает соблюдение 152-ФЗ (данные покупателей хранятся в РФ).
 
-Ниже — команды по шагам. Вместо `santeh-lavka.ru` подставьте свой домен.
+Ниже — команды по шагам. Вместо `delo-truba.ru` подставьте свой домен.
 
 ### 5.1. Домен
 
@@ -196,7 +196,7 @@ nano .env
 
 ```
 DATABASE_URL="postgresql://lavka:СЛОЖНЫЙ_ПАРОЛЬ@localhost:5432/lavka?schema=public"
-NEXT_PUBLIC_SITE_URL="https://santeh-lavka.ru"
+NEXT_PUBLIC_SITE_URL="https://delo-truba.ru"
 SESSION_SECRET="..."          # результат команды: openssl rand -base64 32
 ```
 
@@ -222,16 +222,16 @@ pm2 save && pm2 startup                      # автозапуск после �
 
 ```bash
 cp deploy/nginx.conf /etc/nginx/sites-available/santeh-lavka
-nano /etc/nginx/sites-available/santeh-lavka      # заменить santeh-lavka.ru на свой домен
+nano /etc/nginx/sites-available/santeh-lavka      # заменить delo-truba.ru на свой домен
 ln -s /etc/nginx/sites-available/santeh-lavka /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
 # Бесплатный сертификат Let's Encrypt (продлевается автоматически)
-certbot --nginx -d santeh-lavka.ru -d www.santeh-lavka.ru --redirect
+certbot --nginx -d delo-truba.ru -d www.delo-truba.ru --redirect
 ```
 
-Готово — сайт открывается по `https://santeh-lavka.ru`.
+Готово — сайт открывается по `https://delo-truba.ru`.
 
 ### 5.6. Резервные копии
 
@@ -266,7 +266,7 @@ pm2 restart santeh-lavka
 
 ### 5.8. Поисковики
 
-- [Яндекс Вебмастер](https://webmaster.yandex.ru) и [Google Search Console](https://search.google.com/search-console): добавьте сайт, подтвердите права, укажите карту сайта `https://santeh-lavka.ru/sitemap.xml`.
+- [Яндекс Вебмастер](https://webmaster.yandex.ru) и [Google Search Console](https://search.google.com/search-console): добавьте сайт, подтвердите права, укажите карту сайта `https://delo-truba.ru/sitemap.xml`.
 - Добавьте магазин в [Яндекс Бизнес](https://yandex.ru/sprav) и 2ГИС — для «сантехника рядом» это важнее всего.
 
 ## 6. А если Vercel?
@@ -288,7 +288,7 @@ pm2 restart santeh-lavka
 - [ ] Заменить баннеры на главной.
 - [ ] Если запускали полный `npm run db:seed` на сервере, смените пароль тестового администратора `admin` («Настройки» → «Пароль администратора»).
 - [ ] Сделать тестовый заказ и убедиться, что пришло сообщение в Telegram и на почту.
-- [ ] Заменить `public/og.png` (картинка для ссылок в соцсетях и мессенджерах, 1200×630) и `public/logo.png`, если появится фирменный логотип.
+- [ ] Если дизайнер пришлёт логотип в векторе (SVG), замените знак в `src/components/brand/BrandMark.tsx`, `src/app/icon.svg`, `public/logo.png` и картинку для соцсетей `public/og.png` (1200×630).
 
 ## 8. Для разработчика
 
@@ -301,7 +301,7 @@ pm2 restart santeh-lavka
 | `npm run lint` / `npm run typecheck` | проверка кода |
 | `npm run db:migrate` | создать миграцию после правки `prisma/schema.prisma` и применить её |
 | `npm run db:deploy` | применить готовые миграции (на сервере) |
-| `npm run db:seed` | тестовые данные (`SEED_CONTENT_ONLY=1` — только тексты и настройки) |
+| `npm run db:seed` | тестовые данные (`SEED_CONTENT_ONLY=1` — только тексты и настройки; `SEED_RESET_PAGES=1` — перезаписать тексты страниц заготовками) |
 | `npm run db:studio` | веб-интерфейс для просмотра базы |
 | `npm run admin:create -- логин пароль` | создать администратора / сменить пароль |
 
@@ -321,6 +321,7 @@ src/lib/import/               импорт и экспорт Excel/CSV
 src/lib/notify.ts             уведомления в Telegram и на почту
 src/lib/seo.ts                мета-теги и Open Graph для страниц
 src/app/globals.css           фирменные цвета и общие стили
+src/components/brand/BrandMark.tsx знак-логотип (домик с краном и каплей)
 deploy/                       примеры настроек nginx, pm2 и скрипт резервных копий
 ```
 

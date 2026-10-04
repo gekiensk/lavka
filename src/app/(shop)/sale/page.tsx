@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 
 export const metadata: Metadata = pageMeta({
   title: "Акции и скидки",
-  description: "Товары со скидкой в магазине сантехники «СанТех Лавка», Тюмень.",
+  description: "Товары со скидкой в сантехнической лавке «Дело Труба», Тюмень.",
   path: "/sale",
 });
 

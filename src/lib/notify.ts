@@ -35,7 +35,7 @@ async function sendEmail(subject: string, html: string) {
     secure: port === 465,
     auth: { user: SMTP_USER, pass: SMTP_PASSWORD },
   });
-  await transport.sendMail({ from: `"СанТех Лавка" <${SMTP_USER}>`, to: NOTIFY_EMAIL, subject, html });
+  await transport.sendMail({ from: `"Дело Труба" <${SMTP_USER}>`, to: NOTIFY_EMAIL, subject, html });
 }
 
 /**

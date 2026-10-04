@@ -9,7 +9,7 @@ import { categoryUrl, getCategoryTree } from "@/lib/catalog";
 
 export const metadata: Metadata = pageMeta({
   title: "Каталог сантехники",
-  description: "Каталог магазина «СанТех Лавка»: смесители, унитазы, раковины, ванны, трубы и фитинги, водонагреватели и радиаторы.",
+  description: "Каталог магазина «Дело Труба»: смесители, унитазы, раковины, ванны, трубы и фитинги, водонагреватели и радиаторы.",
   path: "/catalog",
 });
 
