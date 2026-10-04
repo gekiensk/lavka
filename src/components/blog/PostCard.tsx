@@ -1,3 +1,4 @@
+import { skipOptimization } from "@/lib/images";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/lib/content";
@@ -9,7 +10,7 @@ export function PostCard({ post }: { post: Post }) {
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:border-brand-200 hover:shadow-md">
       {post.cover && (
         <div className="relative aspect-[16/9] bg-surface">
-          <Image src={post.cover} alt="" fill sizes="(max-width: 640px) 100vw, 33vw" className="object-contain p-4" unoptimized={post.cover.endsWith(".svg")} />
+          <Image src={post.cover} alt="" fill sizes="(max-width: 640px) 100vw, 33vw" className="object-contain p-4" unoptimized={skipOptimization(post.cover)} />
         </div>
       )}
       <div className="flex flex-1 flex-col p-4 sm:p-5">

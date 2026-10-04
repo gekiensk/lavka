@@ -1,5 +1,6 @@
 "use client";
 // Галерея фото товара: большое фото и миниатюры. На телефоне фото листаются свайпом.
+import { skipOptimization } from "@/lib/images";
 import { useRef, useState } from "react";
 import Image from "next/image";
 
@@ -39,7 +40,7 @@ export function Gallery({ images, name }: { images: Img[]; name: string }) {
               priority={i === 0}
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-contain p-6"
-              unoptimized={img.url.endsWith(".svg")}
+              unoptimized={skipOptimization(img.url)}
             />
           </div>
         ))}
@@ -58,7 +59,7 @@ export function Gallery({ images, name }: { images: Img[]; name: string }) {
                 i === active ? "border-brand-500" : "border-transparent hover:border-line"
               }`}
             >
-              <Image src={img.url} alt="" fill sizes="80px" className="object-contain p-1" unoptimized={img.url.endsWith(".svg")} />
+              <Image src={img.url} alt="" fill sizes="80px" className="object-contain p-1" unoptimized={skipOptimization(img.url)} />
             </button>
           ))}
         </div>
