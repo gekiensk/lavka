@@ -1,0 +1,15 @@
+# Сайт «Дело Труба» на Raspberry Pi. Устанавливается командой bash deploy/pi/install.sh
+[Unit]
+Description=Сайт «Дело Труба» (Next.js)
+After=network-online.target
+
+[Service]
+WorkingDirectory=@PROJECT_DIR@
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+ExecStart=@NODE_BIN@ node_modules/next/dist/bin/next start -p 3000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

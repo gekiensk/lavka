@@ -1,0 +1,10 @@
+# Каждые 5 минут проверять, нет ли обновлений в ветке main
+[Unit]
+Description=Проверка обновлений сайта каждые 5 минут
+
+[Timer]
+OnBootSec=3min
+OnUnitInactiveSec=5min
+
+[Install]
+WantedBy=timers.target
