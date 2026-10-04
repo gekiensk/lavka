@@ -1,4 +1,4 @@
-// Схема базы данных «СанТех Лавка».
+// Схема базы данных «Дело Труба».
 // После изменений: `npm run db:migrate` (создаёт миграцию и обновляет клиент).
 
 generator client {
@@ -165,7 +165,7 @@ enum DeliveryType {
 
 model Order {
   id           Int          @id @default(autoincrement())
-  /// Номер для клиента: СЛ-000123
+  /// Номер для клиента: ДТ-000123
   number       String       @unique
   customerName String
   phone        String

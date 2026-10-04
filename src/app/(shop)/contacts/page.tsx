@@ -9,7 +9,7 @@ import { RequestDialog } from "@/components/ui/RequestDialog";
 
 export const metadata: Metadata = pageMeta({
   title: "Контакты",
-  description: "Адрес, телефон и часы работы магазина сантехники «СанТех Лавка» в Тюмени. Как проехать.",
+  description: "Адрес, телефон и часы работы сантехнической лавки «Дело Труба» в Тюмени. Как проехать.",
   path: "/contacts",
 });
 

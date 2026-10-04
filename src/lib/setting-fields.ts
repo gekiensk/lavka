@@ -4,6 +4,6 @@ export const SETTING_FIELDS = [
   { key: "address", label: "Адрес магазина", hint: "По нему строится карта на странице «Контакты»" },
   { key: "hours", label: "Часы работы", hint: "Например: Пн–Сб 9:00–19:00, Вс 10:00–17:00" },
   { key: "phone", label: "Телефон", hint: "Пусто — кнопка звонка скрыта" },
-  { key: "telegram", label: "Telegram", hint: "Имя пользователя без @, например santeh_lavka" },
+  { key: "telegram", label: "Telegram", hint: "Имя пользователя без @, например delo_truba" },
   { key: "email", label: "Email для покупателей", hint: "Показывается в контактах" },
 ] as const;

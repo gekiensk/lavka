@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { logout } from "../actions/auth";
+import { BrandMark } from "@/components/brand/BrandMark";
 
 export const metadata: Metadata = { title: { default: "Админка", template: "%s — Админка" }, robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -18,13 +19,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-surface">
-      <header className="border-b border-line bg-white">
+      <header className="bg-ink text-white">
         <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
-          <Link href="/admin" className="font-extrabold">СанТех Лавка · админка</Link>
-          <Link href="/" target="_blank" className="text-sm text-brand-700 hover:underline">Открыть сайт ↗</Link>
+          <Link href="/admin" className="flex items-center gap-2 font-display font-extrabold">
+            <BrandMark className="h-8 w-8" inverse /> Дело Труба · админка
+          </Link>
+          <Link href="/" target="_blank" className="text-sm text-brand-300 hover:underline">Открыть сайт ↗</Link>
           <form action={logout} className="ml-auto flex items-center gap-3 text-sm">
-            <span className="hidden text-muted sm:inline">{admin.login}</span>
-            <button className="rounded-lg border border-line px-3 py-1.5 hover:bg-surface">Выйти</button>
+            <span className="hidden text-gray sm:inline">{admin.login}</span>
+            <button className="rounded-lg border border-white/20 px-3 py-1.5 hover:bg-white/10">Выйти</button>
           </form>
         </div>
       </header>

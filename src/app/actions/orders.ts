@@ -50,7 +50,7 @@ export async function createOrder(_prev: OrderFormState, formData: FormData): Pr
   const order = await db.$transaction(async (tx) => {
     const created = await tx.order.create({
       data: {
-        // Временный номер; ниже заменим на «СЛ-000123» по id заказа
+        // Временный номер; ниже заменим на «ДТ-000123» по id заказа
         number: `tmp-${crypto.randomUUID()}`,
         customerName: data.customerName,
         phone: data.phone,
@@ -69,7 +69,7 @@ export async function createOrder(_prev: OrderFormState, formData: FormData): Pr
     }
     return tx.order.update({
       where: { id: created.id },
-      data: { number: `СЛ-${String(created.id).padStart(6, "0")}` },
+      data: { number: `ДТ-${String(created.id).padStart(6, "0")}` },
     });
   });
 

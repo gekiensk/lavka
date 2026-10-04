@@ -21,7 +21,7 @@ export async function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
       {/* Верхняя полоска с адресом и часами — только на планшетах и компьютерах */}
-      <div className="hidden border-b border-line bg-surface text-sm text-muted md:block">
+      <div className="hidden bg-ink text-sm text-gray md:block">
         <div className="container-page flex h-9 items-center gap-6">
           <span className="flex items-center gap-1.5">
             <MapPin className="h-4 w-4" /> {settings.address}
@@ -30,10 +30,10 @@ export async function Header() {
             <Clock className="h-4 w-4" /> {settings.hours}
           </span>
           <nav className="ml-auto flex items-center gap-5">
-            <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="font-semibold text-brand-700 hover:text-ink" />
-            <Link href="/delivery" className="hover:text-ink">Доставка и оплата</Link>
-            <Link href="/about" className="hover:text-ink">О магазине</Link>
-            <Link href="/contacts" className="hover:text-ink">Контакты</Link>
+            <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="font-semibold text-brand-300 hover:text-white" />
+            <Link href="/delivery" className="hover:text-white">Доставка и оплата</Link>
+            <Link href="/about" className="hover:text-white">О магазине</Link>
+            <Link href="/contacts" className="hover:text-white">Контакты</Link>
           </nav>
         </div>
       </div>
