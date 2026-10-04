@@ -1,6 +1,7 @@
 // Страница категории или подкатегории: /catalog/smesiteli и /catalog/smesiteli/smesiteli-dlya-kuhni
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
+import { pageMeta } from "@/lib/seo";
 import { CatalogListing } from "@/components/catalog/CatalogListing";
 import { categoryUrl, getCategoryBySlug, getDescendantIds, hasActiveFilters, parseFilters } from "@/lib/catalog";
 
@@ -14,15 +15,16 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const url = categoryUrl([...category.ancestors.map((a) => a.slug), category.slug]);
   const filtered = hasActiveFilters(parseFilters(await searchParams));
 
-  return {
+  return pageMeta({
     title: category.metaTitle ?? `${category.name} — купить в Тюмени`,
     description:
       category.metaDesc ??
       `${category.name}: цены, наличие и характеристики. Доставка по Тюмени и самовывоз из магазина «СанТех Лавка».`,
-    alternates: { canonical: url },
+    path: url,
+    images: category.image ? [category.image] : [],
     // Страницы с выбранными фильтрами не индексируем — чтобы не плодить дубли в поиске
-    robots: filtered ? { index: false, follow: true } : undefined,
-  };
+    noindex: filtered,
+  });
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {

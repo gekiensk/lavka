@@ -3,20 +3,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDate, getPost } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Markdown } from "@/components/ui/Markdown";
+import { JsonLd, articleJsonLd } from "@/components/seo/JsonLd";
 
 type Props = PageProps<"/blog/[slug]">;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost((await params).slug);
   if (!post) return {};
-  return {
+  return pageMeta({
     title: post.metaTitle ?? post.title,
-    description: post.metaDesc ?? post.excerpt ?? undefined,
-    alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: { type: "article", title: post.title, description: post.excerpt ?? undefined, publishedTime: post.publishedAt?.toISOString() },
-  };
+    description: post.metaDesc ?? post.excerpt,
+    path: `/blog/${post.slug}`,
+    images: post.cover ? [post.cover] : [],
+    type: "article",
+  });
 }
 
 export default async function PostPage({ params }: Props) {
@@ -25,6 +28,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="container-page">
+      <JsonLd data={articleJsonLd(post)} />
       <Breadcrumbs items={[{ name: "Статьи и советы", url: "/blog" }, { name: post.title, url: `/blog/${post.slug}` }]} />
       <article className="max-w-3xl">
         <time className="text-sm text-muted">{formatDate(post.publishedAt)}</time>

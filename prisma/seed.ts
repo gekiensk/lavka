@@ -1,5 +1,6 @@
 // Тестовые данные: категории, бренды, характеристики, ~30 товаров, настройки магазина.
 // Запуск: `npm run db:seed`. Скрипт можно запускать повторно — он очищает каталог и создаёт заново.
+// На сервере: `SEED_CONTENT_ONLY=1 npm run db:seed` — только тексты и настройки, каталог не трогается.
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, type Stock } from "../src/generated/prisma/client";
@@ -303,7 +304,17 @@ const SETTINGS: Record<string, string> = {
   email: "info@santeh-lavka.ru",
 };
 
+// SEED_CONTENT_ONLY=1 — только страницы, статьи, баннеры и настройки, без тестового каталога и без admin/admin12345.
+// Так безопасно запускать на сервере: заказы и ваши товары не трогаются.
+const CONTENT_ONLY = process.env.SEED_CONTENT_ONLY === "1";
+
 async function main() {
+  if (!CONTENT_ONLY) await seedCatalog();
+  await seedContent();
+}
+
+/** Тестовый каталог. ВНИМАНИЕ: удаляет все товары и категории (и строки заказов) перед созданием */
+async function seedCatalog() {
   console.log("Очищаем каталог…");
   await db.productAttribute.deleteMany();
   await db.productImage.deleteMany();
@@ -417,6 +428,10 @@ async function main() {
     });
   }
 
+  console.log(`Каталог готов. Разделов: ${CATEGORIES.length}, товаров: ${PRODUCTS.length}.`);
+}
+
+async function seedContent() {
   console.log("Сохраняем настройки магазина…");
   for (const [key, value] of Object.entries(SETTINGS)) {
     // update: {} — не перезаписываем то, что уже поменяли в админке
@@ -440,12 +455,12 @@ async function main() {
   }
 
   // Администратор для локальной разработки. На сервере создайте своего: npm run admin:create
-  if ((await db.adminUser.count()) === 0) {
+  if (!CONTENT_ONLY && (await db.adminUser.count()) === 0) {
     await db.adminUser.create({ data: { login: "admin", passwordHash: await bcrypt.hash("admin12345", 12) } });
     console.log("Создан администратор admin / admin12345 — смените пароль перед запуском сайта!");
   }
 
-  console.log(`Готово. Разделов: ${CATEGORIES.length}, товаров: ${PRODUCTS.length}.`);
+  console.log("Готово.");
 }
 
 main()

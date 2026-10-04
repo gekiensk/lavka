@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   },
   description:
     "Смесители, унитазы, ванны, трубы и фитинги, водонагреватели и радиаторы в Тюмени. Цены, наличие, заказ онлайн, доставка по городу и самовывоз.",
+  openGraph: {
+    type: "website",
+    siteName: "СанТех Лавка",
+    locale: "ru_RU",
+    images: ["/og.png"],
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

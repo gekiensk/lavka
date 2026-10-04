@@ -1,16 +1,17 @@
 // Весь каталог: разделы и их подразделы.
 import { skipOptimization } from "@/lib/images";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { categoryUrl, getCategoryTree } from "@/lib/catalog";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Каталог сантехники",
   description: "Каталог магазина «СанТех Лавка»: смесители, унитазы, раковины, ванны, трубы и фитинги, водонагреватели и радиаторы.",
-  alternates: { canonical: "/catalog" },
-};
+  path: "/catalog",
+});
 
 export default async function CatalogPage() {
   const tree = await getCategoryTree();

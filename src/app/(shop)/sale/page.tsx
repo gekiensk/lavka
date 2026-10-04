@@ -1,13 +1,14 @@
 // Акции: все товары со старой ценой.
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { CatalogListing } from "@/components/catalog/CatalogListing";
 import { db } from "@/lib/db";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Акции и скидки",
   description: "Товары со скидкой в магазине сантехники «СанТех Лавка», Тюмень.",
-  alternates: { canonical: "/sale" },
-};
+  path: "/sale",
+});
 
 export default async function SalePage({ searchParams }: PageProps<"/sale">) {
   const where = { oldPrice: { not: null } };
