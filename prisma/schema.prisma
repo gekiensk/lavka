@@ -1,0 +1,265 @@
+// Схема базы данных «СанТех Лавка».
+// После изменений: `npm run db:migrate` (создаёт миграцию и обновляет клиент).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ───────────── Каталог ─────────────
+
+/// Категория. Дерево: у подкатегории заполнен parentId.
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String
+  /// Часть адреса: /catalog/smesiteli/dlya-kuhni
+  slug        String     @unique
+  parentId    Int?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  /// SEO-текст внизу страницы категории
+  description String?
+  image       String?
+  sortOrder   Int        @default(0)
+  /// Показывать на главной в «Популярных категориях»
+  isPopular   Boolean    @default(false)
+  metaTitle   String?
+  metaDesc    String?
+
+  products   Product[]
+  attributes CategoryAttribute[]
+
+  @@index([parentId])
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  slug     String    @unique
+  products Product[]
+}
+
+/// Наличие товара
+enum Stock {
+  IN_STOCK // в наличии
+  ON_ORDER // под заказ
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  /// Артикул. По нему сопоставляются товары при импорте из Excel.
+  sku         String   @unique
+  name        String
+  slug        String   @unique
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  brandId     Int?
+  brand       Brand?   @relation(fields: [brandId], references: [id])
+  /// Цена в рублях (целое число)
+  price       Int
+  /// Старая цена — если заполнена, товар считается акционным
+  oldPrice    Int?
+  stock       Stock    @default(IN_STOCK)
+  /// Единица измерения: шт, м, компл.
+  unit        String   @default("шт")
+  /// Описание (обычный текст, абзацы разделяются пустой строкой)
+  description String?
+  /// Хит продаж — показывается на главной
+  isHit       Boolean  @default(false)
+  /// Скрыть товар с сайта, не удаляя
+  isActive    Boolean  @default(true)
+  /// Растёт с каждым заказом — для сортировки «по популярности»
+  popularity  Int      @default(0)
+  metaTitle   String?
+  metaDesc    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  images     ProductImage[]
+  attributes ProductAttribute[]
+  /// «С этим товаром покупают» — связи, заданные вручную
+  related    ProductRelation[] @relation("RelationFrom")
+  relatedTo  ProductRelation[] @relation("RelationTo")
+  orderItems OrderItem[]
+
+  @@index([categoryId, isActive])
+  @@index([brandId])
+  @@index([price])
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int     @default(0)
+
+  @@index([productId])
+}
+
+/// Справочник характеристик: «Материал», «Длина излива» и т.п.
+model Attribute {
+  id         Int                 @id @default(autoincrement())
+  name       String              @unique
+  slug       String              @unique
+  /// Единица измерения для показа: мм, л, кВт
+  unit       String?
+  /// Числовая характеристика → фильтр «от–до», иначе — галочки
+  isNumeric  Boolean             @default(false)
+  values     ProductAttribute[]
+  categories CategoryAttribute[]
+}
+
+/// Какие характеристики выводить в фильтрах конкретной категории
+model CategoryAttribute {
+  categoryId  Int
+  attributeId Int
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  sortOrder   Int       @default(0)
+
+  @@id([categoryId, attributeId])
+}
+
+/// Значение характеристики у товара
+model ProductAttribute {
+  productId   Int
+  attributeId Int
+  value       String
+  /// Заполняется для числовых характеристик (для фильтра «от–до»)
+  numValue    Float?
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  @@id([productId, attributeId])
+  @@index([attributeId, value])
+}
+
+model ProductRelation {
+  fromId Int
+  toId   Int
+  from   Product @relation("RelationFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to     Product @relation("RelationTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  @@id([fromId, toId])
+}
+
+// ───────────── Заказы и заявки ─────────────
+
+enum OrderStatus {
+  NEW // новый
+  IN_PROGRESS // в работе
+  DONE // выполнен
+  CANCELLED // отменён
+}
+
+enum DeliveryType {
+  PICKUP // самовывоз
+  DELIVERY // доставка по городу
+}
+
+model Order {
+  id           Int          @id @default(autoincrement())
+  /// Номер для клиента: СЛ-000123
+  number       String       @unique
+  customerName String
+  phone        String
+  email        String?
+  delivery     DeliveryType
+  address      String?
+  comment      String?
+  total        Int
+  status       OrderStatus  @default(NEW)
+  /// Заметка менеджера, клиент её не видит
+  adminNote    String?
+  /// Когда клиент дал согласие на обработку персональных данных (152-ФЗ)
+  consentAt    DateTime
+  createdAt    DateTime     @default(now())
+  items        OrderItem[]
+
+  @@index([status, createdAt])
+}
+
+/// Позиция заказа. Название и цена копируются, чтобы заказ не менялся при правке товара.
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  sku       String
+  name      String
+  price     Int
+  qty       Int
+}
+
+enum RequestType {
+  CALLBACK // «Перезвоните мне»
+  AVAILABILITY // «Узнать наличие»
+}
+
+model Request {
+  id        Int         @id @default(autoincrement())
+  type      RequestType
+  name      String?
+  phone     String
+  productId Int?
+  comment   String?
+  isHandled Boolean     @default(false)
+  createdAt DateTime    @default(now())
+}
+
+// ───────────── Контент ─────────────
+
+model Banner {
+  id        Int     @id @default(autoincrement())
+  title     String
+  subtitle  String?
+  image     String?
+  link      String?
+  isActive  Boolean @default(true)
+  sortOrder Int     @default(0)
+}
+
+/// Текстовые страницы: О магазине, Доставка, Гарантия, Политика и т.п.
+model Page {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  title     String
+  content   String
+  metaTitle String?
+  metaDesc  String?
+  updatedAt DateTime @updatedAt
+}
+
+/// Статьи и советы
+model Post {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  title       String
+  excerpt     String?
+  content     String
+  cover       String?
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  metaTitle   String?
+  metaDesc    String?
+}
+
+/// Настройки «ключ → значение»: телефон, адрес, часы работы и т.п.
+model Setting {
+  key   String @id
+  value String
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  login        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
