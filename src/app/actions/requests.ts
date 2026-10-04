@@ -1,6 +1,8 @@
 "use server";
 // Серверное действие: сохраняет заявку «Узнать наличие» или «Перезвоните мне».
+import { after } from "next/server";
 import { db } from "@/lib/db";
+import { notifyNewRequest } from "@/lib/notify";
 import { fieldErrors, requestSchema, type FieldErrors } from "@/lib/validators";
 
 export type RequestFormState = {
@@ -24,7 +26,11 @@ export async function createRequest(_prev: RequestFormState, formData: FormData)
   const { type, name, phone, comment, productId } = parsed.data;
   await db.request.create({ data: { type, name, phone, comment, productId } });
 
-  // Уведомление владельцу в Telegram и на почту подключим на этапе «Корзина и заказ»
+  // Уведомление отправляем уже после ответа посетителю, чтобы он не ждал Telegram
+  after(async () => {
+    const product = productId ? await db.product.findUnique({ where: { id: productId }, select: { name: true } }) : null;
+    await notifyNewRequest({ type, name, phone, comment, productName: product?.name });
+  });
 
   return { ok: true };
 }

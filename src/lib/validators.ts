@@ -48,3 +48,36 @@ export function fieldErrors(error: z.ZodError): FieldErrors {
   }
   return out;
 }
+
+/** Оформление заказа */
+export const orderSchema = z
+  .object({
+    customerName: z.string().trim().min(2, "Укажите имя").max(100),
+    phone: phoneSchema,
+    email: z.email("Проверьте email").optional(),
+    delivery: z.enum(["PICKUP", "DELIVERY"], { error: "Выберите способ получения" }),
+    address: z.string().trim().max(300).optional(),
+    comment: z.string().trim().max(1000).optional(),
+    consent: consentSchema,
+    /** Корзина: JSON-массив [{ id, qty }] */
+    items: z
+      .string()
+      .transform((v, ctx) => {
+        try {
+          return JSON.parse(v) as unknown;
+        } catch {
+          ctx.addIssue({ code: "custom", message: "Корзина повреждена" });
+          return z.NEVER;
+        }
+      })
+      .pipe(
+        z
+          .array(z.object({ id: z.number().int().positive(), qty: z.number().int().min(1).max(999) }))
+          .min(1, "Корзина пуста")
+          .max(100),
+      ),
+  })
+  .refine((d) => d.delivery !== "DELIVERY" || (d.address && d.address.length >= 5), {
+    message: "Укажите адрес доставки",
+    path: ["address"],
+  });

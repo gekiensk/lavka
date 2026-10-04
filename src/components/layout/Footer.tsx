@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCategoryTree, getSettings, categoryUrl } from "@/lib/catalog";
 import { phoneHref, telegramHref } from "@/lib/contacts";
 import { Logo } from "./Logo";
+import { RequestDialog } from "@/components/ui/RequestDialog";
 
 export async function Footer() {
   const [settings, tree] = await Promise.all([getSettings(), getCategoryTree()]);
@@ -56,6 +57,7 @@ export async function Footer() {
           )}
           <p className="text-muted">{settings.address}</p>
           <p className="text-muted">{settings.hours}</p>
+          <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="btn mt-2 border border-brand-300 bg-white text-brand-700 hover:bg-brand-50" />
         </div>
       </div>
       <div className="border-t border-line">
