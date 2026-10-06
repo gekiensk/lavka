@@ -11,7 +11,7 @@
 3. [Загрузка товаров из Excel](#3-загрузка-товаров-из-excel)
 4. [Уведомления в Telegram и на почту](#4-уведомления-в-telegram-и-на-почту)
 5. [Размещение на VPS с доменом](#5-размещение-на-vps-с-доменом)
-6. [А если Vercel?](#6-а-если-vercel)
+6. [А если Vercel?](#6-а-если-vercel) · [Домашний Raspberry Pi](docs/raspberry-pi.md)
 7. [Перед запуском: чек-лист](#7-перед-запуском-чек-лист)
 8. [Для разработчика](#8-для-разработчика)
 
@@ -268,6 +268,8 @@ pm2 restart santeh-lavka
 
 - [Яндекс Вебмастер](https://webmaster.yandex.ru) и [Google Search Console](https://search.google.com/search-console): добавьте сайт, подтвердите права, укажите карту сайта `https://delo-truba.ru/sitemap.xml`.
 - Добавьте магазин в [Яндекс Бизнес](https://yandex.ru/sprav) и 2ГИС — для «сантехника рядом» это важнее всего.
+
+Для показа сайта знакомым подойдёт и домашний Raspberry Pi 3B+: см. [docs/raspberry-pi.md](docs/raspberry-pi.md).
 
 ## 6. А если Vercel?
 

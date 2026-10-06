@@ -1,0 +1,9 @@
+# Проверка обновлений на GitHub и пересборка сайта. Запускается таймером lavka-update.timer
+[Unit]
+Description=Обновление сайта «Дело Труба» из GitHub
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_DIR@
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=/bin/bash @PROJECT_DIR@/deploy/pi/update.sh
