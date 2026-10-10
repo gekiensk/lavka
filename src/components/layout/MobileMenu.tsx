@@ -23,7 +23,7 @@ export function MobileMenu({ menu, settings }: { menu: MenuItem[]; settings: Sit
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="-ml-2 rounded-lg p-2.5 text-ink hover:bg-surface lg:hidden"
+        className="-ml-2 rounded-full p-2.5 text-ink hover:bg-surface lg:hidden"
         aria-label="Открыть меню"
       >
         <Menu className="h-6 w-6" />
@@ -31,11 +31,11 @@ export function MobileMenu({ menu, settings }: { menu: MenuItem[]; settings: Sit
 
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
-          <div className="absolute inset-0 bg-ink/40" onClick={() => setOpen(false)} />
-          <div className="absolute inset-y-0 left-0 flex w-[85%] max-w-sm flex-col bg-white shadow-xl">
+          <div className="absolute inset-0 bg-ink/50 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="absolute inset-y-0 left-0 flex w-[85%] max-w-sm flex-col rounded-r-[2rem] bg-white shadow-xl">
             <div className="flex h-16 items-center justify-between border-b border-line px-4">
-              <span className="text-lg font-bold">Меню</span>
-              <button type="button" onClick={() => setOpen(false)} className="rounded-lg p-2 hover:bg-surface" aria-label="Закрыть меню">
+              <span className="font-display text-lg font-extrabold">Меню</span>
+              <button type="button" onClick={() => setOpen(false)} className="rounded-full p-2 hover:bg-surface" aria-label="Закрыть меню">
                 <X className="h-6 w-6" />
               </button>
             </div>
@@ -47,28 +47,28 @@ export function MobileMenu({ menu, settings }: { menu: MenuItem[]; settings: Sit
                 if ((e.target as HTMLElement).closest("a")) setOpen(false);
               }}
             >
-              <Link href="/catalog" className="block rounded-lg px-3 py-3 font-bold text-brand-700">
+              <Link href="/catalog" className="mb-1 flex items-center justify-center rounded-full bg-ink px-3 py-3 font-bold text-white">
                 Весь каталог
               </Link>
               {menu.map((c) => (
                 <details key={c.url} className="group">
-                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-3 font-semibold hover:bg-surface">
+                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-3 py-3 font-semibold hover:bg-surface">
                     {c.name}
                     <ChevronDown className="h-5 w-5 text-muted transition group-open:rotate-180" />
                   </summary>
                   <div className="pb-2 pl-4">
-                    <Link href={c.url} className="block rounded-lg px-3 py-2 text-brand-700">
+                    <Link href={c.url} className="block rounded-xl px-3 py-2 text-brand-700">
                       Все товары раздела
                     </Link>
                     {c.children.map((ch) => (
-                      <Link key={ch.url} href={ch.url} className="block rounded-lg px-3 py-2 text-ink hover:bg-surface">
+                      <Link key={ch.url} href={ch.url} className="block rounded-xl px-3 py-2 text-ink hover:bg-surface">
                         {ch.name}
                       </Link>
                     ))}
                   </div>
                 </details>
               ))}
-              <Link href="/sale" className="block rounded-lg px-3 py-3 font-semibold text-sale">Акции</Link>
+              <Link href="/sale" className="block rounded-xl px-3 py-3 font-semibold text-sale">Акции</Link>
               <hr className="my-2 border-line" />
               {[
                 ["/about", "О магазине"],
@@ -77,7 +77,7 @@ export function MobileMenu({ menu, settings }: { menu: MenuItem[]; settings: Sit
                 ["/blog", "Статьи и советы"],
                 ["/contacts", "Контакты"],
               ].map(([href, label]) => (
-                <Link key={href} href={href} className="block rounded-lg px-3 py-2.5 text-ink hover:bg-surface">
+                <Link key={href} href={href} className="block rounded-xl px-3 py-2.5 text-ink hover:bg-surface">
                   {label}
                 </Link>
               ))}
@@ -87,12 +87,12 @@ export function MobileMenu({ menu, settings }: { menu: MenuItem[]; settings: Sit
               <p className="text-muted">{settings.hours}</p>
               <div className="flex gap-2">
                 {settings.phone && (
-                  <a href={phoneHref(settings.phone)} className="btn flex-1 bg-brand-600 text-white">
+                  <a href={phoneHref(settings.phone)} className="btn flex-1 bg-ink text-white">
                     <Phone className="h-4 w-4" /> Позвонить
                   </a>
                 )}
                 {settings.telegram && (
-                  <a href={telegramHref(settings.telegram)} target="_blank" rel="noopener" className="btn flex-1 border border-line text-brand-700">
+                  <a href={telegramHref(settings.telegram)} target="_blank" rel="noopener" className="btn flex-1 border border-line text-ink">
                     <Send className="h-4 w-4" /> Telegram
                   </a>
                 )}

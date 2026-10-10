@@ -33,12 +33,12 @@ export function RequestDialog({ type, productId, productName, buttonText, button
         ref={dialogRef}
         // Клик по затемнённому фону закрывает окно
         onClick={(e) => e.target === dialogRef.current && dialogRef.current?.close()}
-        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 backdrop:bg-ink/40"
+        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-[1.75rem] p-0 backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
       >
         <div className="p-5 sm:p-6">
           <div className="mb-4 flex items-start justify-between gap-4">
             <h2 className="text-lg font-extrabold">{TITLES[type]}</h2>
-            <button type="button" onClick={() => dialogRef.current?.close()} className="-m-1 rounded-lg p-1 hover:bg-surface" aria-label="Закрыть">
+            <button type="button" onClick={() => dialogRef.current?.close()} className="-m-1 rounded-full p-1.5 hover:bg-surface" aria-label="Закрыть">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -53,7 +53,7 @@ export function RequestDialog({ type, productId, productName, buttonText, button
           ) : (
             // key: после ответа сервера форма пересоздаётся с введёнными значениями
             <form key={JSON.stringify(state.values)} action={formAction} className="space-y-3">
-              {productName && <p className="rounded-lg bg-surface px-3 py-2 text-sm text-muted">{productName}</p>}
+              {productName && <p className="rounded-xl bg-surface px-3 py-2 text-sm text-muted">{productName}</p>}
               <input type="hidden" name="type" value={type} />
               {productId && <input type="hidden" name="productId" value={productId} />}
               {/* Ловушка для спам-ботов: поле скрыто от людей */}
@@ -90,7 +90,7 @@ function Field({ label, error, ...input }: { label: string; error?: string } & R
       <input
         {...input}
         aria-invalid={!!error}
-        className={`h-11 w-full rounded-lg border px-3 outline-none focus:border-brand-400 ${error ? "border-sale" : "border-line"}`}
+        className={`h-12 w-full rounded-xl border px-4 outline-none focus:border-ink/40 ${error ? "border-sale" : "border-line"}`}
       />
       {error && <span className="mt-1 block text-xs text-sale">{error}</span>}
     </label>

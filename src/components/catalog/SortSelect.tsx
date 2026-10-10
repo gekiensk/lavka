@@ -21,7 +21,7 @@ export function SortSelect({ value }: { value: SortKey }) {
           const qs = next.toString();
           router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
         }}
-        className="h-10 rounded-lg border border-line bg-white px-3 font-medium outline-none focus:border-brand-400"
+        className="h-10 rounded-full border border-line bg-white px-4 font-medium outline-none hover:border-ink/40 focus:border-ink/40"
       >
         {SORT_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>{o.label}</option>

@@ -23,14 +23,14 @@ export default async function CatalogPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {tree.map((c) => (
-          <section key={c.id} className="flex gap-4 rounded-2xl border border-line bg-white p-4 sm:p-5">
+          <section key={c.id} className="flex gap-5 rounded-[1.75rem] bg-surface p-5 sm:p-6">
             {c.image && (
-              <Link href={categoryUrl([c.slug])} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface sm:h-24 sm:w-24">
+              <Link href={categoryUrl([c.slug])} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-white sm:h-24 sm:w-24">
                 <Image src={c.image} alt="" fill sizes="96px" className="object-contain p-1" unoptimized={skipOptimization(c.image)} />
               </Link>
             )}
             <div className="min-w-0">
-              <h2 className="text-lg font-bold">
+              <h2 className="text-xl font-extrabold">
                 <Link href={categoryUrl([c.slug])} className="hover:text-brand-700">{c.name}</Link>
               </h2>
               <ul className="mt-2 space-y-1 text-[15px]">

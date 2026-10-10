@@ -58,7 +58,7 @@ export default async function ContactsPage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+        <div className="overflow-hidden rounded-[1.75rem] bg-surface">
           <iframe src={mapSrc} title={`Карта: ${s.address}`} loading="lazy" className="h-80 w-full sm:h-[28rem]" />
         </div>
       </div>

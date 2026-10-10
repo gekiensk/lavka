@@ -86,21 +86,21 @@ export default async function ProductPage({ params }: Props) {
 
         <div>
           {product.brand && <p className="text-sm font-semibold text-brand-600">{product.brand.name}</p>}
-          <h1 className="mt-1 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">{product.name}</h1>
+          <h1 className="mt-1 text-2xl font-extrabold leading-tight sm:text-4xl">{product.name}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
             <span>Арт. {product.sku}</span>
             <StockBadge stock={product.stock} />
           </div>
 
           {/* Цена и действия */}
-          <div className="mt-5 rounded-2xl border border-line bg-surface p-5">
+          <div className="mt-6 rounded-[1.75rem] bg-surface p-5 sm:p-6">
             <div className="flex flex-wrap items-baseline gap-x-3">
-              <span className={`text-3xl font-extrabold ${discount ? "text-sale" : ""}`}>{formatPrice(product.price)}</span>
+              <span className={`tabular font-display text-4xl font-extrabold tracking-tight ${discount ? "text-sale" : ""}`}>{formatPrice(product.price)}</span>
               {product.unit !== "шт" && <span className="text-muted">за {product.unit}</span>}
               {discount && (
                 <>
                   <span className="text-lg text-muted line-through">{formatPrice(product.oldPrice!)}</span>
-                  <span className="rounded-md bg-sale px-2 py-0.5 text-sm font-bold text-white">−{discount}%</span>
+                  <span className="tabular rounded-full bg-sale px-2.5 py-0.5 text-sm font-bold text-white">−{discount}%</span>
                 </>
               )}
             </div>
@@ -173,7 +173,7 @@ export default async function ProductPage({ params }: Props) {
       <div className="mt-12 grid gap-10 lg:grid-cols-2">
         {paragraphs.length > 0 && (
           <section>
-            <h2 className="mb-3 text-xl font-extrabold">Описание</h2>
+            <h2 className="mb-4 text-2xl font-extrabold">Описание</h2>
             <div className="space-y-3 text-[15px] leading-relaxed text-ink/90">
               {paragraphs.map((p, i) => (
                 <p key={i}>{p}</p>
@@ -182,21 +182,21 @@ export default async function ProductPage({ params }: Props) {
           </section>
         )}
         <section id="specs" className="scroll-mt-40">
-          <h2 className="mb-3 text-xl font-extrabold">Характеристики</h2>
+          <h2 className="mb-4 text-2xl font-extrabold">Характеристики</h2>
           <SpecsTable rows={specs} />
         </section>
       </div>
 
       {together.length > 0 && (
-        <section className="mt-14">
-          <h2 className="mb-4 text-xl font-extrabold sm:text-2xl">С этим товаром покупают</h2>
+        <section className="mt-20">
+          <h2 className="section-title mb-6">С этим товаром покупают</h2>
           <ProductGrid products={together} />
         </section>
       )}
 
       {similar.length > 0 && (
-        <section className="mt-14">
-          <h2 className="mb-4 text-xl font-extrabold sm:text-2xl">Похожие товары</h2>
+        <section className="mt-20">
+          <h2 className="section-title mb-6">Похожие товары</h2>
           <ProductGrid products={similar} />
         </section>
       )}
