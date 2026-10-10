@@ -47,7 +47,7 @@ export function CheckoutForm({ pickupAddress }: { pickupAddress: string }) {
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
       <div className="space-y-6">
-        <section className="rounded-2xl border border-line p-4 sm:p-6">
+        <section className="rounded-[1.75rem] border border-line p-5 sm:p-7">
           <h2 className="mb-4 text-lg font-extrabold">Контактные данные</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Имя *" name="customerName" autoComplete="name" defaultValue={v.customerName} error={e.customerName} />
@@ -56,7 +56,7 @@ export function CheckoutForm({ pickupAddress }: { pickupAddress: string }) {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-line p-4 sm:p-6">
+        <section className="rounded-[1.75rem] border border-line p-5 sm:p-7">
           <h2 className="mb-4 text-lg font-extrabold">Способ получения</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             <DeliveryOption value="PICKUP" current={delivery} onChange={setDelivery} icon={<Store className="h-5 w-5" />} title="Самовывоз" note={pickupAddress} />
@@ -67,17 +67,17 @@ export function CheckoutForm({ pickupAddress }: { pickupAddress: string }) {
           )}
           <label className="mt-4 block text-sm">
             <span className="mb-1 block font-semibold">Комментарий к заказу</span>
-            <textarea name="comment" rows={3} defaultValue={v.comment} placeholder="Удобное время звонка, подъезд, этаж…" className="w-full rounded-lg border border-line px-3 py-2 outline-none focus:border-brand-400" />
+            <textarea name="comment" rows={3} defaultValue={v.comment} placeholder="Удобное время звонка, подъезд, этаж…" className="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-ink/40" />
           </label>
         </section>
       </div>
 
-      <aside className="rounded-2xl border border-line bg-surface p-5 lg:sticky lg:top-40">
+      <aside className="rounded-[1.75rem] bg-surface p-6 lg:sticky lg:top-40">
         <h2 className="mb-3 text-lg font-extrabold">Ваш заказ</h2>
         <ul className="max-h-72 space-y-3 overflow-y-auto">
           {items.map((i) => (
             <li key={i.id} className="flex items-center gap-3 text-sm">
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-white">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white">
                 {i.image && <Image src={i.image} alt="" fill sizes="48px" className="object-contain p-0.5" unoptimized={skipOptimization(i.image)} />}
               </div>
               <span className="line-clamp-2 flex-1">{i.name}</span>
@@ -140,7 +140,7 @@ function Field({ label, error, className = "", ...input }: { label: string; erro
       <input
         {...input}
         aria-invalid={!!error}
-        className={`h-11 w-full rounded-lg border px-3 outline-none focus:border-brand-400 ${error ? "border-sale" : "border-line"}`}
+        className={`h-12 w-full rounded-xl border px-4 outline-none focus:border-ink/40 ${error ? "border-sale" : "border-line"}`}
       />
       {error && <span className="mt-1 block text-xs text-sale">{error}</span>}
     </label>

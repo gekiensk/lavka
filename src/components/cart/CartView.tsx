@@ -39,7 +39,7 @@ export function CartView() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
-      <ul className="divide-y divide-line rounded-2xl border border-line">
+      <ul className="divide-y divide-line border-y border-line">
         {items.map((i) => (
           <li key={i.id} className="flex gap-3 p-3 sm:gap-4 sm:p-4">
             <Link href={`/product/${i.slug}`} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface sm:h-24 sm:w-24">
@@ -55,7 +55,7 @@ export function CartView() {
               </div>
 
               <div className="flex items-center justify-between gap-3 sm:justify-end">
-                <div className="flex items-center rounded-lg border border-line">
+                <div className="flex items-center rounded-full border border-line">
                   <button type="button" onClick={() => setQty(i.id, i.qty - 1)} disabled={i.qty <= 1} className="flex h-9 w-9 items-center justify-center disabled:opacity-30" aria-label="Меньше">
                     <Minus className="h-4 w-4" />
                   </button>
@@ -76,7 +76,7 @@ export function CartView() {
                   <div className="font-extrabold">{formatPrice(i.price * i.qty)}</div>
                   {i.qty > 1 && <div className="text-xs text-muted">{formatPrice(i.price)} / {i.unit}</div>}
                 </div>
-                <button type="button" onClick={() => remove(i.id)} className="rounded-lg p-2 text-muted hover:bg-surface hover:text-sale" aria-label="Удалить">
+                <button type="button" onClick={() => remove(i.id)} className="rounded-full p-2 text-muted hover:bg-surface hover:text-sale" aria-label="Удалить">
                   <Trash2 className="h-4.5 w-4.5" />
                 </button>
               </div>
@@ -85,7 +85,7 @@ export function CartView() {
         ))}
       </ul>
 
-      <aside className="rounded-2xl border border-line bg-surface p-5 lg:sticky lg:top-40">
+      <aside className="rounded-[1.75rem] bg-surface p-6 lg:sticky lg:top-40">
         <div className="flex justify-between text-muted">
           <span>{count} {plural(count, ["товар", "товара", "товаров"])}</span>
           <span>{formatPrice(total)}</span>

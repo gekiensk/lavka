@@ -73,15 +73,15 @@ export function SearchBox() {
           onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
           placeholder="Поиск: смеситель, унитаз или артикул"
           autoComplete="off"
-          className="h-11 w-full rounded-xl border border-line bg-surface pl-4 pr-12 text-[15px] outline-none transition placeholder:text-muted focus:border-brand-400 focus:bg-white"
+          className="h-12 w-full rounded-full border border-transparent bg-surface pl-5 pr-14 text-[15px] outline-none transition placeholder:text-muted hover:border-line focus:border-water focus:bg-white"
         />
-        <button type="submit" className="absolute right-1 top-1 flex h-9 w-10 items-center justify-center rounded-lg text-brand-700 hover:bg-brand-50" aria-label="Найти">
-          <Search className="h-5 w-5" />
+        <button type="submit" className="absolute right-1.5 top-1.5 flex h-9 w-11 items-center justify-center rounded-full bg-ink text-white hover:bg-ink-soft" aria-label="Найти">
+          <Search className="h-4.5 w-4.5" />
         </button>
       </form>
 
       {showSuggest && (
-        <div className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-line bg-white shadow-lg">
+        <div className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-3xl border border-line bg-white shadow-[0_16px_40px_-12px_rgb(31_41_55/0.25)]">
           {data.categories.length > 0 && (
             <div className="border-b border-line p-2">
               {data.categories.map((c) => (
@@ -103,7 +103,7 @@ export function SearchBox() {
                     <span className="line-clamp-1 text-sm text-ink">{p.name}</span>
                     <span className="text-xs text-muted">Арт. {p.sku}</span>
                   </span>
-                  <span className="shrink-0 text-sm font-bold">{formatPrice(p.price)}</span>
+                  <span className="tabular shrink-0 text-sm font-bold">{formatPrice(p.price)}</span>
                 </Link>
               </li>
             ))}

@@ -22,8 +22,8 @@ export function AddToCartButton({ product, variant = "full", className = "" }: P
         type="button"
         onClick={() => add(product)}
         aria-label={hydrated && inCart ? "Добавить ещё" : "В корзину"}
-        className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-lg transition ${
-          hydrated && inCart ? "bg-brand-100 text-brand-700" : "bg-brand-600 text-white hover:bg-brand-700"
+        className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full transition ${
+          hydrated && inCart ? "bg-brand-100 text-brand-700" : "bg-ink text-white hover:bg-brand-600"
         } ${className}`}
       >
         {hydrated && inCart ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />}

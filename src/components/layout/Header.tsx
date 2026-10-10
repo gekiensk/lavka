@@ -1,6 +1,6 @@
 // Шапка сайта. Серверный компонент: берёт контакты и категории из базы.
 import Link from "next/link";
-import { Clock, MapPin, Phone, Send } from "lucide-react";
+import { Clock, LayoutGrid, MapPin, Phone, Send } from "lucide-react";
 import { getCategoryTree, getSettings, categoryUrl } from "@/lib/catalog";
 import { phoneHref, telegramHref } from "@/lib/contacts";
 import { Logo } from "./Logo";
@@ -19,21 +19,21 @@ export async function Header() {
   }));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur-md">
       {/* Верхняя полоска с адресом и часами — только на планшетах и компьютерах */}
-      <div className="hidden bg-ink text-sm text-gray md:block">
+      <div className="hidden border-b border-line text-[13px] text-muted md:block">
         <div className="container-page flex h-9 items-center gap-6">
           <span className="flex items-center gap-1.5">
-            <MapPin className="h-4 w-4" /> {settings.address}
+            <MapPin className="h-3.5 w-3.5 text-brand-600" aria-hidden /> {settings.address}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" /> {settings.hours}
+            <Clock className="h-3.5 w-3.5 text-brand-600" aria-hidden /> {settings.hours}
           </span>
           <nav className="ml-auto flex items-center gap-5">
-            <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="font-semibold text-brand-300 hover:text-white" />
-            <Link href="/delivery" className="hover:text-white">Доставка и оплата</Link>
-            <Link href="/about" className="hover:text-white">О магазине</Link>
-            <Link href="/contacts" className="hover:text-white">Контакты</Link>
+            <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="font-semibold text-brand-700 hover:text-ink" />
+            <Link href="/delivery" className="hover:text-ink">Доставка и оплата</Link>
+            <Link href="/about" className="hover:text-ink">О магазине</Link>
+            <Link href="/contacts" className="hover:text-ink">Контакты</Link>
           </nav>
         </div>
       </div>
@@ -49,14 +49,14 @@ export async function Header() {
         <div className="ml-auto flex items-center gap-1 md:ml-0 md:gap-3">
           {settings.phone && (
             <a href={phoneHref(settings.phone)} className="hidden flex-col items-end leading-tight lg:flex">
-              <span className="font-bold text-ink">{settings.phone}</span>
+              <span className="tabular font-display font-extrabold tracking-tight text-ink">{settings.phone}</span>
               <span className="text-xs text-muted">звоните, подскажем</span>
             </a>
           )}
           {settings.phone && (
             <a
               href={phoneHref(settings.phone)}
-              className="rounded-lg p-2.5 text-brand-700 hover:bg-brand-50 lg:hidden"
+              className="rounded-full p-2.5 text-ink hover:bg-surface lg:hidden"
               aria-label="Позвонить"
             >
               <Phone className="h-5 w-5" />
@@ -67,7 +67,7 @@ export async function Header() {
               href={telegramHref(settings.telegram)}
               target="_blank"
               rel="noopener"
-              className="rounded-lg p-2.5 text-brand-700 hover:bg-brand-50"
+              className="rounded-full p-2.5 text-ink hover:bg-surface"
               aria-label="Написать в Telegram"
             >
               <Send className="h-5 w-5" />
@@ -83,23 +83,23 @@ export async function Header() {
       </div>
 
       {/* Меню категорий на компьютере */}
-      <nav className="hidden border-t border-line lg:block" aria-label="Категории">
-        <ul className="container-page flex h-12 items-center gap-1 text-[15px] font-semibold">
-          <li>
-            <Link href="/catalog" className="rounded-lg bg-brand-600 px-4 py-2 text-white hover:bg-brand-700">
-              Каталог
+      <nav className="hidden lg:block" aria-label="Категории">
+        <ul className="container-page flex h-14 items-center gap-1 text-[15px] font-semibold">
+          <li className="mr-2">
+            <Link href="/catalog" className="flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-white hover:bg-ink-soft">
+              <LayoutGrid className="h-4 w-4" aria-hidden /> Каталог
             </Link>
           </li>
           {menu.map((c) => (
             <li key={c.url} className="group relative">
-              <Link href={c.url} className="block rounded-lg px-3 py-2 text-ink hover:bg-surface">
+              <Link href={c.url} className="block rounded-full px-4 py-2.5 text-ink hover:bg-surface">
                 {c.name}
               </Link>
               {c.children.length > 0 && (
-                <ul className="invisible absolute left-0 top-full z-50 min-w-60 rounded-xl border border-line bg-white p-2 font-medium opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <ul className="invisible absolute left-0 top-full z-50 min-w-64 translate-y-1 rounded-2xl border border-line bg-white p-2 font-medium opacity-0 shadow-[0_16px_40px_-12px_rgb(31_41_55/0.25)] transition group-hover:translate-y-0 group-focus-within:translate-y-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                   {c.children.map((ch) => (
                     <li key={ch.url}>
-                      <Link href={ch.url} className="block rounded-lg px-3 py-2 text-ink hover:bg-surface">
+                      <Link href={ch.url} className="block rounded-xl px-3 py-2 text-ink hover:bg-surface">
                         {ch.name}
                       </Link>
                     </li>
@@ -109,7 +109,7 @@ export async function Header() {
             </li>
           ))}
           <li className="ml-auto">
-            <Link href="/sale" className="rounded-lg px-3 py-2 text-sale hover:bg-surface">
+            <Link href="/sale" className="rounded-full bg-sale/10 px-4 py-2.5 text-sale hover:bg-sale/15">
               Акции
             </Link>
           </li>

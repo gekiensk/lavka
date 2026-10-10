@@ -73,13 +73,13 @@ export function Filters({ facets, filters, total, keep, resetHref }: Props) {
             type="number" name="price_min" inputMode="numeric" min={0}
             defaultValue={filters.priceMin}
             placeholder={`от ${facets.price.min}`}
-            className="h-10 w-full rounded-lg border border-line px-3 text-sm outline-none focus:border-brand-400"
+            className="h-10 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-ink/40"
           />
           <input
             type="number" name="price_max" inputMode="numeric" min={0}
             defaultValue={filters.priceMax}
             placeholder={`до ${facets.price.max}`}
-            className="h-10 w-full rounded-lg border border-line px-3 text-sm outline-none focus:border-brand-400"
+            className="h-10 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-ink/40"
           />
         </div>
         <p className="mt-1 text-xs text-muted">
@@ -115,13 +115,13 @@ export function Filters({ facets, filters, total, keep, resetHref }: Props) {
                 type="number" name={`f_${a.slug}_min`} step="any"
                 defaultValue={filters.attrRanges[a.slug]?.min}
                 placeholder={`от ${a.min}`}
-                className="h-10 w-full rounded-lg border border-line px-3 text-sm outline-none focus:border-brand-400"
+                className="h-10 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-ink/40"
               />
               <input
                 type="number" name={`f_${a.slug}_max`} step="any"
                 defaultValue={filters.attrRanges[a.slug]?.max}
                 placeholder={`до ${a.max}`}
-                className="h-10 w-full rounded-lg border border-line px-3 text-sm outline-none focus:border-brand-400"
+                className="h-10 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-ink/40"
               />
             </div>
           </fieldset>
@@ -142,7 +142,7 @@ export function Filters({ facets, filters, total, keep, resetHref }: Props) {
         ),
       )}
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <button type="submit" className="btn flex-1 bg-brand-600 text-white hover:bg-brand-700">
           Показать {total} {plural(total, ["товар", "товара", "товаров"])}
         </button>

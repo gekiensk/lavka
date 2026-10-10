@@ -7,18 +7,18 @@ type Post = { slug: string; title: string; excerpt: string | null; cover: string
 
 export function PostCard({ post }: { post: Post }) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:border-brand-200 hover:shadow-md">
+    <article className="group relative flex flex-col">
       {post.cover && (
-        <div className="relative aspect-[16/9] bg-surface">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-[1.5rem] bg-surface transition-colors group-hover:bg-brand-50">
           <Image src={post.cover} alt="" fill sizes="(max-width: 640px) 100vw, 33vw" className="object-contain p-4" unoptimized={skipOptimization(post.cover)} />
         </div>
       )}
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
+      <div className="flex flex-1 flex-col pt-4">
         <time className="text-xs text-muted">{formatDate(post.publishedAt)}</time>
-        <h2 className="mt-1 text-lg font-bold leading-snug group-hover:text-brand-700">
-          <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0">{post.title}</Link>
+        <h2 className="mt-1.5 text-xl font-extrabold leading-snug group-hover:text-brand-700">
+          <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0 after:rounded-[1.5rem]">{post.title}</Link>
         </h2>
-        {post.excerpt && <p className="mt-2 text-sm text-muted">{post.excerpt}</p>}
+        {post.excerpt && <p className="mt-2 text-[15px] leading-relaxed text-muted">{post.excerpt}</p>}
       </div>
     </article>
   );

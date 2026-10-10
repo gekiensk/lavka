@@ -9,23 +9,25 @@ export async function Footer() {
   const [settings, tree] = await Promise.all([getSettings(), getCategoryTree()]);
 
   return (
-    <footer className="mt-16 bg-ink text-sm text-white">
-      <div className="container-page grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="mt-24 bg-ink text-sm text-white">
+      {/* Слоган крупно, с вертикальной чертой, как в брендбуке */}
+      <div className="container-page border-b border-white/10 py-12 sm:py-16">
+        <p className="max-w-3xl border-l-4 border-brand-500 pl-5 font-display text-3xl font-black leading-[1.05] tracking-tight sm:text-5xl">
+          Всё для воды, тепла и ремонта рядом
+        </p>
+      </div>
+      <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div className="space-y-3">
           <Logo inverse />
           {/* Слоган с вертикальной чертой, как в брендбуке */}
-          <p className="border-l-2 border-brand-500 pl-3 text-base font-semibold leading-snug">
-            Всё для воды, тепла
-            <br />и ремонта рядом
-          </p>
-          <p className="text-gray">
+          <p className="max-w-xs text-gray">
             Сантехническая лавка в {settings.city === "Тюмень" ? "Тюмени" : settings.city}. Для частных покупателей и мастеров.
           </p>
         </div>
 
         <div>
-          <h2 className="mb-3 font-display font-extrabold uppercase tracking-wide text-white">Каталог</h2>
-          <ul className="space-y-2">
+          <h2 className="mb-4 text-base font-extrabold text-white">Каталог</h2>
+          <ul className="space-y-2.5">
             {tree.map((c) => (
               <li key={c.id}>
                 <Link href={categoryUrl([c.slug])} className="text-gray hover:text-white">{c.name}</Link>
@@ -36,8 +38,8 @@ export async function Footer() {
         </div>
 
         <div>
-          <h2 className="mb-3 font-display font-extrabold uppercase tracking-wide text-white">Покупателям</h2>
-          <ul className="space-y-2">
+          <h2 className="mb-4 text-base font-extrabold text-white">Покупателям</h2>
+          <ul className="space-y-2.5">
             {[
               ["/delivery", "Доставка и оплата"],
               ["/warranty", "Гарантия и возврат"],
@@ -51,9 +53,9 @@ export async function Footer() {
         </div>
 
         <div className="space-y-2">
-          <h2 className="mb-3 font-display font-extrabold uppercase tracking-wide text-white">Контакты</h2>
+          <h2 className="mb-4 text-base font-extrabold text-white">Контакты</h2>
           {settings.phone && (
-            <a href={phoneHref(settings.phone)} className="block text-base font-bold text-white">{settings.phone}</a>
+            <a href={phoneHref(settings.phone)} className="tabular block font-display text-xl font-extrabold tracking-tight text-white">{settings.phone}</a>
           )}
           {settings.telegram && (
             <a href={telegramHref(settings.telegram)} target="_blank" rel="noopener" className="block text-brand-300 hover:underline">
@@ -62,7 +64,7 @@ export async function Footer() {
           )}
           <p className="text-gray">{settings.address}</p>
           <p className="text-gray">{settings.hours}</p>
-          <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="btn mt-2 bg-brand-600 text-white hover:bg-brand-500" />
+          <RequestDialog type="CALLBACK" buttonText="Перезвоните мне" buttonClassName="btn mt-3 bg-brand-500 text-ink hover:bg-brand-300" />
         </div>
       </div>
       <div className="border-t border-white/10">
